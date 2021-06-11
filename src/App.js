@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { Header } from "./components/Header";
+import { Senyor } from "./components/Senyor";
+import { senyoresAPI } from "./datos/senyores";
+
 function App() {
   /* import { senyoresAPI } from "../datos/senyores.js";
 
@@ -52,12 +57,7 @@ const pintarListaSenyores = () => {
   }
 };
 
-const pintaTotal = () => {
-  const totalElemento = document.querySelector(".total");
-  totalElemento.textContent = senyores.filter(
-    (senyor) => senyor.marcado
-  ).length;
-};
+
 
 const borrarListaSenyores = () => {
   const senyoresElementos = principal.querySelectorAll(
@@ -83,51 +83,18 @@ botonMarcarTodos.addEventListener("click", (evento) => {
   pintaUI();
 });
  */
+  const senyores = [...senyoresAPI];
+  const [marcadorSenyores, setMarcadorSenyores] = useState(0);
+
+  const actualizarMarcador = () => {
+    setMarcadorSenyores(senyores.filter((senyor) => senyor.marcado).length);
+  };
 
   return (
     <div className="contenedor-general container-xl">
-      <header className="cabecera text-center py-2 row">
-        <h1 className="col-12">Señores que te apuntan con el dedo</h1>
-        <span className="col-12 mt-2">
-          <span className="total">0</span> señores que te apuntan con el dedo
-          marcados
-        </span>
-        <a href="marcar-todos" className="marcar-todos col-2 offset-5 btn mt-2">
-          Marcar todos
-        </a>
-      </header>
-      <main className="principal mt-2 row">
-        <article className="senyor senyor-molde col-8 offset-2 mb-4">
-          <div className="row">
-            <div className="avatar col">
-              <img
-                src=""
-                className="img-fluid rounded-circle"
-                width="214"
-                alt=""
-              />
-              <span className="inicial text-center rounded-circle"></span>
-            </div>
-            <div className="info col">
-              <h2 className="nombre-senyor"></h2>
-              <ul className="datos list-unstyled mt-2">
-                <li className="datos-profesion row">
-                  <span className="nombre-dato col-4">Profesión:</span>
-                  <span className="valor-dato col"></span>
-                </li>
-                <li className="datos-estado row">
-                  <span className="nombre-dato col-4">Estado:</span>
-                  <span className="valor-dato col"></span>
-                </li>
-                <li className="datos-twitter row">
-                  <span className="nombre-dato col-4">Twitter:</span>
-                  <span className="valor-dato col"></span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <i className="icono fas fa-check"></i>
-        </article>
+      <Header marcadorSenyores={marcadorSenyores} />
+      <main onClick={actualizarMarcador} className="principal mt-2 row">
+        <Senyor />
       </main>
     </div>
   );
